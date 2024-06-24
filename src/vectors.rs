@@ -1,6 +1,6 @@
-mod vectors {
+pub mod vectors {
 
-    trait Vector3 {
+    pub trait Vector3 {
         fn new(x:f32, y:f32, z:f32) -> Self;
 
         fn x(&self) -> f32;
@@ -8,7 +8,7 @@ mod vectors {
         fn z(&self) -> f32;
 
         fn x_mut(&mut self) -> &mut f32;
-fn y_mut(&mut self) -> &mut f32;
+        fn y_mut(&mut self) -> &mut f32;
         fn z_mut(&mut self) -> &mut f32;
 
         
@@ -38,7 +38,7 @@ fn y_mut(&mut self) -> &mut f32;
         }
     }
 
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Point3{
         x: f32,
         y: f32,
@@ -75,7 +75,7 @@ fn y_mut(&mut self) -> &mut f32;
         }
     }
 
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Color{
         r: f32,
         g: f32,

@@ -1,5 +1,3 @@
-mod image_handler{
-    
     pub mod image_handler {
         use std::io::Cursor;
         use image::{io::Reader as ImageReader, GenericImageView};
@@ -14,7 +12,7 @@ mod image_handler{
             image.save(image_path).unwrap();
         }
 
-        pub fn create_image_file(width:i32, height:i32) -> image::RgbImage {
+        pub fn new(width:i32, height:i32) -> image::RgbImage {
             let img = image::RgbImage::new(width as u32, height as u32);
             img
     }
@@ -47,9 +45,8 @@ mod image_handler{
 
         #[test]
         fn test_create_image_file() {
-            let img = image_handler::create_image_file(800, 1200);
+            let img = image_handler::new(800, 1200);
             assert_eq!(img.width(), 800);
             assert_eq!(img.height(), 1200);
         }
     }
-}
