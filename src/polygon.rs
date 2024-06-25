@@ -24,7 +24,7 @@ pub mod polygon {
             let cross_product = Point3::new(part_0, part_1, part_2);
             cross_product
         }
-        pub fn get_normal_line(&self) -> Point3 {
+        fn get_normal_line(&self) -> Point3 {
             // calculate point in the middle of the line betwen two points of our polygon
             //
             let mut a_hat = self.v0.clone();
@@ -36,10 +36,23 @@ pub mod polygon {
             let normal_line = Polygon::get_cross_product(a_hat, b_hat);
             normal_line
         }
+        pub fn get_plane_vector(&self) -> Vec<f32> {
+            let normal_line = self.get_normal_line();
+            let s = self.v1;
+            let mut n_negative = normal_line.clone();
+            n_negative.multiply_by_number(-1.0);
+
+            let k = (n_negative.x * s.x) + (n_negative.y * s.y) + (n_negative.z * s.z);
+
+            let p = vec![normal_line.x, normal_line.y, normal_line.z, k];
+            p
+        }
     }
 
     #[cfg(test)]
     mod tests {
+        use std::vec;
+
         use super::*;
         #[test]
         fn test_poligon_creation() -> () {
@@ -58,6 +71,16 @@ pub mod polygon {
             let poligon = Polygon::new(v0, v1, v2);
 
             assert_eq!(poligon.get_normal_line(), Point3::new(0.0, -2.0, -2.0));
+        }
+        #[test]
+        fn test_calculating_plane_vector() -> () {
+            let v0 = Point3::new(-1.0, 0.0, 2.0);
+            let v1 = Point3::new(1.0, 0.0, 2.0);
+            let v2 = Point3::new(0.0, -1.0, 3.0);
+
+            let poligon = Polygon::new(v0, v1, v2);
+
+            assert_eq!(poligon.get_plane_vector(), vec![0.0, -2.0, -2.0, 4.0]);
         }
     }
 }
