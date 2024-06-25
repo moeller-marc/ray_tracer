@@ -17,6 +17,12 @@ pub mod vectors {
             *self.z_mut() += other.z();
         }
 
+        fn subtract<T: Vector3>(&mut self, other: T) -> () {
+            *self.x_mut() -= other.x();
+            *self.y_mut() -= other.y();
+            *self.z_mut() -= other.z();
+        }
+
         fn multiply_by_number(&mut self, num: f32) -> () {
             *self.x_mut() *= num;
             *self.y_mut() *= num;
@@ -39,9 +45,9 @@ pub mod vectors {
 
     #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Point3 {
-        x: f32,
-        y: f32,
-        z: f32,
+        pub x: f32,
+        pub y: f32,
+        pub z: f32,
     }
     impl Vector3 for Point3 {
         fn new(x: f32, y: f32, z: f32) -> Self {
