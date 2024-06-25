@@ -38,7 +38,7 @@ pub mod polygon {
         }
         pub fn get_plane_vector(&self) -> Vec<f32> {
             let normal_line = self.get_normal_line();
-            let s = self.v1;
+            let s = self.v0;
             let mut n_negative = normal_line.clone();
             n_negative.multiply_by_number(-1.0);
 

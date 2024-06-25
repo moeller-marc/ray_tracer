@@ -44,6 +44,38 @@ pub mod vectors {
     }
 
     #[derive(Debug, PartialEq, Clone, Copy)]
+    pub struct Vector_3 {
+        pub a: f32,
+        pub b: f32,
+        pub c: f32,
+    }
+
+    impl Vector3 for Vector_3 {
+        fn new(a: f32, b: f32, c: f32) -> Self {
+            let vector = Vector_3 { a: a, b: b, c: c };
+            vector
+        }
+        fn x(&self) -> f32 {
+            self.a
+        }
+        fn y(&self) -> f32 {
+            self.b
+        }
+        fn z(&self) -> f32 {
+            self.c
+        }
+        fn x_mut(&mut self) -> &mut f32 {
+            &mut self.a
+        }
+        fn y_mut(&mut self) -> &mut f32 {
+            &mut self.b
+        }
+        fn z_mut(&mut self) -> &mut f32 {
+            &mut self.c
+        }
+    }
+
+    #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Point3 {
         pub x: f32,
         pub y: f32,
@@ -54,7 +86,6 @@ pub mod vectors {
             let point_out = Point3 { x: x, y: y, z: z };
             point_out
         }
-
         fn x(&self) -> f32 {
             self.x
         }
