@@ -3,16 +3,64 @@ pub mod polygon {
 
     #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Polygon {
-        v0: Point3,
-        v1: Point3,
-        v2: Point3,
+        pub v0: Point3,
+        pub v1: Point3,
+        pub v2: Point3,
+
+        pub x_max: f32,
+        pub y_max: f32,
+        pub z_max: f32,
+
+        pub x_min: f32,
+        pub y_min: f32,
+        pub z_min: f32,
     }
     impl Polygon {
         pub fn new(v0: Point3, v1: Point3, v2: Point3) -> Self {
+            let mut x_max: f32 = 0.0;
+            let mut y_max: f32 = 0.0;
+            let mut z_max: f32 = 0.0;
+
+            let mut x_min: f32 = 0.0;
+            let mut y_min: f32 = 0.0;
+            let mut z_min: f32 = 0.0;
+
+            let temp_vec = vec![v0, v1, v2];
+            for item in temp_vec.iter() {
+                if item.x() > x_max {
+                    x_max = item.x();
+                }
+                if item.x() < x_min {
+                    x_min = item.x();
+                }
+
+                if item.y() > y_max {
+                    y_max = item.y();
+                }
+                if item.y() < y_min {
+                    y_min = item.y();
+                }
+
+                if item.z() > z_max {
+                    z_max = item.z();
+                }
+                if item.z() < z_min {
+                    z_min = item.z();
+                }
+            }
+
             Polygon {
                 v0: v0,
                 v1: v1,
                 v2: v2,
+
+                x_max: x_max,
+                y_max: y_max,
+                z_max: z_max,
+
+                x_min: x_min,
+                y_min: y_min,
+                z_min: z_min,
             }
         }
 

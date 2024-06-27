@@ -1,4 +1,7 @@
 pub mod ray {
+
+    use crate::polygon::polygon;
+
     use super::super::vectors::vectors::*;
 
     #[derive(Debug, PartialEq, Clone, Copy)]
@@ -32,13 +35,36 @@ pub mod ray {
             combination
         }
 
-        pub fn calculate_intersection_point(&self, plane_vector: Vec<f32>) -> Vector_3 {
+        fn calculate_intersection_point(&self, plane_vector: Vec<f32>) -> Vector_3 {
             let lambda = self.calculate_lambda(plane_vector);
             let i_x = lambda * self.angle.x() + self.origin.x();
             let i_y = lambda * self.angle.y() + self.origin.y();
             let i_z = lambda * self.angle.z() + self.origin.z();
             let vector_out = Vector_3::new(i_x, i_y, i_z);
             vector_out
+        }
+        pub fn in_bounding_box(&self, polygon: polygon::Polygon) -> bool {
+            let intersection_points = self.calculate_intersection_point(polygon.get_plane_vector());
+            if intersection_points.x() > polygon.x_max {
+                return false;
+            }
+            if intersection_points.x() < polygon.x_min {
+                return false;
+            }
+            if intersection_points.y() > polygon.y_max {
+                return false;
+            }
+            if intersection_points.y() < polygon.y_min {
+                return false;
+            }
+            if intersection_points.z() > polygon.z_max {
+                return false;
+            }
+            if intersection_points.z() < polygon.z_min {
+                return false;
+            }
+
+            true
         }
     }
 
