@@ -1,4 +1,5 @@
 pub mod vectors {
+    use std::iter;
 
     pub trait Vector3 {
         fn new(x: f32, y: f32, z: f32) -> Self;
@@ -11,28 +12,64 @@ pub mod vectors {
         fn y_mut(&mut self) -> &mut f32;
         fn z_mut(&mut self) -> &mut f32;
 
-        fn add<T: Vector3>(&mut self, other: T) -> () {
-            *self.x_mut() += other.x();
-            *self.y_mut() += other.y();
-            *self.z_mut() += other.z();
+        fn add<T: Vector3>(&self, other: T) -> Vector_3 {
+            let mut x = self.x();
+            let mut y = self.y();
+            let mut z = self.z();
+
+            x += other.x();
+            y += other.y();
+            z += other.z();
+
+            Vector_3::new(x, y, z)
         }
 
-        fn subtract<T: Vector3>(&mut self, other: T) -> () {
-            *self.x_mut() -= other.x();
-            *self.y_mut() -= other.y();
-            *self.z_mut() -= other.z();
+        fn subtract<T: Vector3>(&self, other: T) -> Vector_3 {
+            let mut x = self.x();
+            let mut y = self.y();
+            let mut z = self.z();
+
+            x -= other.x();
+            y -= other.y();
+            z -= other.z();
+
+            Vector_3::new(x, y, z)
         }
 
-        fn multiply_by_number(&mut self, num: f32) -> () {
-            *self.x_mut() *= num;
-            *self.y_mut() *= num;
-            *self.z_mut() *= num;
+        fn multiply<T: Vector3>(&self, other: T) -> Vector_3 {
+            let mut x = self.x();
+            let mut y = self.y();
+            let mut z = self.z();
+
+            x *= other.x();
+            y *= other.y();
+            z *= other.z();
+
+            Vector_3::new(x, y, z)
         }
 
-        fn divide_by_number(&mut self, num: f32) -> () {
-            *self.x_mut() /= num;
-            *self.y_mut() /= num;
-            *self.z_mut() /= num;
+        fn multiply_by_number(&self, num: f32) -> Vector_3 {
+            let mut x = self.x();
+            let mut y = self.y();
+            let mut z = self.z();
+
+            x *= num;
+            y *= num;
+            z *= num;
+
+            Vector_3::new(x, y, z)
+        }
+
+        fn divide_by_number(&self, num: f32) -> Vector_3 {
+            let mut x = self.x();
+            let mut y = self.y();
+            let mut z = self.z();
+
+            x *= num;
+            y *= num;
+            z *= num;
+
+            Vector_3::new(x, y, z)
         }
 
         fn length(&self) -> f32 {

@@ -1,8 +1,8 @@
 pub mod ray {
 
-    use crate::polygon::polygon;
-
-    use super::super::vectors::vectors::*;
+    use crate::polygon::polygon::{self, Polygon};
+    use crate::vectors::vectors::{Point3, Vector3};
+    use crate::Vector_3;
 
     #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Ray {
@@ -43,7 +43,7 @@ pub mod ray {
             let vector_out = Vector_3::new(i_x, i_y, i_z);
             vector_out
         }
-        pub fn in_bounding_box(&self, polygon: polygon::Polygon) -> bool {
+        pub fn in_bounding_box(&self, polygon: Polygon) -> bool {
             let intersection_points = self.calculate_intersection_point(polygon.get_plane_vector());
             if intersection_points.x() > polygon.x_max {
                 return false;
@@ -65,6 +65,74 @@ pub mod ray {
             }
 
             true
+        }
+
+        pub fn intersects_with_polygon(&self, poly: polygon::Polygon) -> bool {
+            let intersection_points = self.calculate_intersection_point(poly.get_plane_vector());
+
+            let ver_0 = poly.v0;
+            let ver_1 = poly.v1;
+            let ver_2 = poly.v2;
+            {
+                // check wether or not i is on the same side as vertecy 0 (ver_0)
+                let v_bar = ver_1.subtract(ver_2);
+                let a_bar = polygon::Polygon::get_cross_product(
+                    v_bar,
+                    (intersection_points.subtract(ver_2)),
+                );
+                let b_bar = polygon::Polygon::get_cross_product(v_bar, (ver_0.subtract(ver_2)));
+
+                let c = polygon::Polygon::get_dot_product(a_bar, b_bar);
+
+                if c < 0.0 {
+                    return false;
+                }
+            }
+            {
+                // check wether or not i is on the same side as vertecy 1 (ver_1)
+                let v_bar = ver_0.subtract(ver_2);
+                let a_bar = polygon::Polygon::get_cross_product(
+                    v_bar,
+                    (intersection_points.subtract(ver_2)),
+                );
+                let b_bar = polygon::Polygon::get_cross_product(v_bar, (ver_1.subtract(ver_2)));
+
+                let c = polygon::Polygon::get_dot_product(a_bar, b_bar);
+
+                if c < 0.0 {
+                    return false;
+                }
+            }
+            {
+                // check wether or not i is on the same side as vertecy 2 (ver_2)
+                let v_bar = ver_0.subtract(ver_1);
+                let a_bar = polygon::Polygon::get_cross_product(
+                    v_bar,
+                    (intersection_points.subtract(ver_1)),
+                );
+                let b_bar = polygon::Polygon::get_cross_product(v_bar, (ver_2.subtract(ver_1)));
+
+                let c = polygon::Polygon::get_dot_product(a_bar, b_bar);
+
+                if c < 0.0 {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        pub fn calculate_distance(&self, poly: Polygon) -> f32 {
+            let intersection_points = self.calculate_intersection_point(poly.get_plane_vector());
+
+            let a = (intersection_points.x() - self.origin.x())
+                * (intersection_points.x() - self.origin.x());
+            let b = (intersection_points.y() - self.origin.y())
+                * (intersection_points.y() - self.origin.y());
+            let c = (intersection_points.z() - self.origin.z())
+                * (intersection_points.z() - self.origin.z());
+
+            let d = f32::sqrt(a + b + c);
+            d
         }
     }
 

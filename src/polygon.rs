@@ -1,5 +1,5 @@
 pub mod polygon {
-    use crate::{vectors::vectors::Point3, Vector3};
+    use crate::{vectors::vectors::Point3, Vector3, Vector_3};
 
     #[derive(Debug, PartialEq, Clone, Copy)]
     pub struct Polygon {
@@ -64,13 +64,19 @@ pub mod polygon {
             }
         }
 
-        fn get_cross_product(a_hat: Point3, b_hat: Point3) -> Point3 {
-            let part_0 = (a_hat.y * b_hat.z) - (a_hat.z * b_hat.y);
-            let part_1 = (a_hat.z * b_hat.x) - (a_hat.x * b_hat.z);
-            let part_2 = (a_hat.x * b_hat.y) - (a_hat.y * b_hat.x);
+        pub fn get_cross_product<T: Vector3>(a_hat: T, b_hat: T) -> Point3 {
+            let part_0 = (a_hat.y() * b_hat.z()) - (a_hat.z() * b_hat.y());
+            let part_1 = (a_hat.z() * b_hat.x()) - (a_hat.x() * b_hat.z());
+            let part_2 = (a_hat.x() * b_hat.y()) - (a_hat.y() * b_hat.x());
 
             let cross_product = Point3::new(part_0, part_1, part_2);
             cross_product
+        }
+        pub fn get_dot_product<T: Vector3>(a_hat: T, b_hat: T) -> f32 {
+            let a = a_hat.x() * b_hat.x();
+            let b = a_hat.y() * b_hat.y();
+            let c = a_hat.z() * b_hat.z();
+            a + b + c
         }
         fn get_normal_line(&self) -> Point3 {
             // calculate point in the middle of the line betwen two points of our polygon
