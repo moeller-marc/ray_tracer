@@ -35,7 +35,7 @@ pub mod ray {
             combination
         }
 
-        fn calculate_intersection_point(&self, plane_vector: Vec<f32>) -> Vector_3 {
+        pub fn calculate_intersection_point(&self, plane_vector: Vec<f32>) -> Vector_3 {
             let lambda = self.calculate_lambda(plane_vector);
             let i_x = lambda * self.angle.x() + self.origin.x();
             let i_y = lambda * self.angle.y() + self.origin.y();
